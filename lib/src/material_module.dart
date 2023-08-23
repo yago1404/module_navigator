@@ -65,14 +65,14 @@ class MaterialModule extends StatelessWidget {
     List<Provider> providersInstances = [
       Provider(create: (_) => RouteProvider()),
     ];
-    List<Provider> createdProviders = [];
+    List<Object> createdBinds = [];
     for (Module module in modules) {
-      for (Provider singleton in module.moduleBinds) {
-        if (createdProviders.contains(singleton)) {
+      for (Object singleton in module.moduleBinds) {
+        if (createdBinds.contains(singleton)) {
           continue;
         }
-        providersInstances.add(singleton);
-        createdProviders.add(singleton);
+        providersInstances.add(Provider(create: (_) => singleton));
+        createdBinds.add(singleton);
       }
     }
     return providersInstances;
