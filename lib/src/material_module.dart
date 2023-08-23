@@ -9,6 +9,7 @@ class MaterialModule extends StatelessWidget {
   final List<Module> modules;
   final ThemeData themeData;
   final List<NavigatorObserver>? navigatorObservers;
+  final List<Provider>? initialBinds;
 
   const MaterialModule({
     super.key,
@@ -16,13 +17,17 @@ class MaterialModule extends StatelessWidget {
     required this.modules,
     required this.themeData,
     this.title,
+    this.initialBinds,
     this.navigatorObservers,
   });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: _initBinds(),
+      providers: [
+        ...(initialBinds ?? []),
+        ..._initBinds(),
+      ],
       child: MaterialApp(
         title: title ?? '',
         navigatorObservers: [
@@ -54,7 +59,8 @@ class MaterialModule extends StatelessWidget {
     routes[baseRoute] = (_) => module.initialPage;
     for (String route in module.routes.keys) {
       if (module.routes[route] is Module) {
-        _extractRoutesFromModules(module.routes[route], routes, prefix: '${prefix ?? ''}${module.moduleRoute}');
+        _extractRoutesFromModules(module.routes[route], routes,
+            prefix: '${prefix ?? ''}${module.moduleRoute}');
         continue;
       }
       routes['${module.moduleRoute}$route'] = (_) => module.routes[route]!;
@@ -86,7 +92,7 @@ class CustomNavigatorObserver extends NavigatorObserver {
         'Navigator push: ${previousRoute?.settings.name} ------> ${route.settings.name}');
     super.didPush(route, previousRoute);
   }
-  
+
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     debugPrint(
