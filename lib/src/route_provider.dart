@@ -1,0 +1,3 @@
+class RouteProvider {
+  String? route;
+}
