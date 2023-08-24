@@ -27,7 +27,7 @@ class MaterialModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ...(initialBinds ?? []),
+        ...initialBinds ?? [],
         ..._initBinds(),
       ],
       child: MaterialApp(
