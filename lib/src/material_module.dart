@@ -74,11 +74,11 @@ class MaterialModule extends StatelessWidget {
       Provider<RouteProvider>(create: (_) => RouteProvider()),
     ];
     for (Module module in modules) {
-      for (Provider singleton in module.moduleBinds) {
-        if (providersInstances.contains(singleton)) {
+      for (Bind singleton in module.moduleBinds) {
+        if (providersInstances.contains(singleton.passToProvider())) {
           continue;
         }
-        providersInstances.add(singleton);
+        providersInstances.add(singleton.passToProvider());
       }
     }
     return providersInstances;

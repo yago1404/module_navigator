@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:module_navigator/module_navigator.dart';
 
 abstract class Module {
   final String moduleRoute;
   final Widget initialPage;
   final Map<String, dynamic> routes;
-  final List<Provider> moduleBinds;
+  final List<Bind> moduleBinds;
 
   Module({
     required this.initialPage,
