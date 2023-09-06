@@ -1,3 +1,5 @@
+android/local.properties
+
 # Miscellaneous
 *.class
 *.log
