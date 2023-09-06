@@ -32,6 +32,7 @@ class MaterialModule extends StatelessWidget {
       ],
       child: MaterialApp(
         title: title ?? '',
+        debugShowCheckedModeBanner: false,
         navigatorObservers: [
           CustomNavigatorObserver(),
           ...navigatorObservers ?? [],
