@@ -11,7 +11,7 @@ class MaterialModule extends StatelessWidget {
   final List<Module> modules;
   final ThemeData themeData;
   final List<NavigatorObserver>? navigatorObservers;
-  final List<Provider>? initialBinds;
+  final List<Bind>? initialBinds;
 
   const MaterialModule({
     super.key,
@@ -27,7 +27,6 @@ class MaterialModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ...initialBinds ?? [],
         ..._initBinds(),
       ],
       child: MaterialApp(
@@ -74,6 +73,12 @@ class MaterialModule extends StatelessWidget {
     List<Provider> providersInstances = [
       Provider<RouteProvider>(create: (_) => RouteProvider()),
     ];
+    for (Bind initialSingleton in initialBinds ?? []) {
+      if (providersInstances.contains(initialSingleton.passToProvider())) {
+        continue;
+      }
+      providersInstances.add(initialSingleton.passToProvider());
+    }
     for (Module module in modules) {
       for (Bind singleton in module.moduleBinds) {
         if (providersInstances.contains(singleton.passToProvider())) {
