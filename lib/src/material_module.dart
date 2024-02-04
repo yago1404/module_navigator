@@ -58,14 +58,19 @@ class MaterialModule extends StatelessWidget {
   }) {
     String baseRoute = '${prefix ?? ''}${module.moduleRoute}'.trim();
     debugPrint('LoadRoute: $baseRoute');
-    routes[baseRoute] = (_) => module.initialPage;
+    routes[baseRoute] = module.initialPage;
     for (String route in module.routes.keys) {
       if (module.routes[route] is Module) {
         _extractRoutesFromModules(module.routes[route], routes,
             prefix: '${prefix ?? ''}${module.moduleRoute}');
         continue;
       }
+      if (module.routes[route] is Widget Function(BuildContext)) {
+        routes['${module.moduleRoute}$route'] = module.routes[route]!;
+        continue;
+      }
       routes['${module.moduleRoute}$route'] = (_) => module.routes[route]!;
+      debugPrint('LoadRoute: ${module.moduleRoute}$route');
     }
   }
 

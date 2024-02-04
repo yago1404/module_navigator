@@ -3,7 +3,7 @@ import 'package:module_navigator/module_navigator.dart';
 
 abstract class Module {
   final String moduleRoute;
-  final Widget initialPage;
+  final Widget Function(BuildContext context) initialPage;
   final Map<String, dynamic> routes;
   final List<Bind> moduleBinds;
 
