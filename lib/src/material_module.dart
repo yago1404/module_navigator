@@ -67,9 +67,9 @@ class MaterialModule extends StatelessWidget {
       }
       if (module.routes[route] is Widget Function(BuildContext)) {
         routes['${module.moduleRoute}$route'] = module.routes[route]!;
-        continue;
+      } else if (module.routes[route] is Widget) {
+        routes['${module.moduleRoute}$route'] = (_) => module.routes[route]!;
       }
-      routes['${module.moduleRoute}$route'] = (_) => module.routes[route]!;
       debugPrint('LoadRoute: ${module.moduleRoute}$route');
     }
   }
