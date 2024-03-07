@@ -65,10 +65,10 @@ class MaterialModule extends StatelessWidget {
             prefix: '${prefix ?? ''}${module.moduleRoute}');
         continue;
       }
-      if (module.routes[route] is Widget Function(BuildContext)) {
+      if (module.routes[route] is Widget Function(BuildContext context)) {
         routes['${module.moduleRoute}$route'] = module.routes[route]!;
-      } else if (module.routes[route] is Widget) {
-        routes['${module.moduleRoute}$route'] = (_) => module.routes[route]!;
+      } else  {
+        throw Exception('sub-module must be a \'Module\' or a \'Widget Function(BuildContext context)\'');
       }
       debugPrint('LoadRoute: ${module.moduleRoute}$route');
     }
