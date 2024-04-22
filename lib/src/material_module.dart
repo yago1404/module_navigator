@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:module_navigator/module_navigator.dart';
+import 'package:module_navigator/src/extensions/app_extension.dart';
 import 'package:module_navigator/src/route_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'navigator_observer.dart';
 
 class MaterialModule extends StatelessWidget {
-  final String initialRoute;
-  final String? title;
+  final MaterialApp materialApp;
   final List<Module> modules;
-  final ThemeData themeData;
   final List<NavigatorObserver>? navigatorObservers;
   final List<Bind>? initialBinds;
 
   const MaterialModule({
     super.key,
-    required this.initialRoute,
+    required this.materialApp,
     required this.modules,
-    required this.themeData,
-    this.title,
-    this.initialBinds,
     this.navigatorObservers,
+    this.initialBinds,
   });
 
   @override
@@ -29,15 +26,8 @@ class MaterialModule extends StatelessWidget {
       providers: [
         ..._initBinds(),
       ],
-      child: MaterialApp(
-        title: title ?? '',
-        debugShowCheckedModeBanner: false,
-        navigatorObservers: [
-          CustomNavigatorObserver(),
-          ...navigatorObservers ?? [],
-        ],
-        theme: themeData,
-        initialRoute: initialRoute,
+      child: materialApp.adaptation(
+        navigatorObserver: CustomNavigatorObserver(),
         routes: _initRoutes(),
       ),
     );
@@ -67,8 +57,9 @@ class MaterialModule extends StatelessWidget {
       }
       if (module.routes[route] is Widget Function(BuildContext context)) {
         routes['${module.moduleRoute}$route'] = module.routes[route]!;
-      } else  {
-        throw Exception('sub-module must be a \'Module\' or a \'Widget Function(BuildContext context)\'');
+      } else {
+        throw Exception(
+            'sub-module must be a \'Module\' or a \'Widget Function(BuildContext context)\'');
       }
       debugPrint('LoadRoute: ${module.moduleRoute}$route');
     }
